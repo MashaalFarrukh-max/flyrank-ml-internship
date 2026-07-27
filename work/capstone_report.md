@@ -84,12 +84,16 @@
 * **Random Seed:** `42` (applied across all data splits and model instantiations).
 * **Notebook Access:**
   * **GitHub Repository:** [MashaalFarrukh-max/flyrank-ml-internship](https://github.com/MashaalFarrukh-max/flyrank-ml-internship)
-internship/blob/main/work/notebooks/ML_08_Capstone.ipynb)
+  * **GitHub Notebook Link:** [w05_model.ipynb on GitHub](https://github.com/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb)
+  * **Google Colab Direct Link:** [Open `w05_model.ipynb` in Colab](https://colab.research.google.com/github/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb)
 * **Execution Commands (Local / Terminal):**
   ```bash
   # 1. Clone repository
   git clone [https://github.com/MashaalFarrukh-max/flyrank-ml-internship.git](https://github.com/MashaalFarrukh-max/flyrank-ml-internship.git)
   cd flyrank-ml-internship
+
+  # 2. Run Capstone Notebook
+  jupyter nbconvert --to notebook --execute work/notebooks/w05_model.ipynb
 
   # 2. Run Capstone Notebook
   jupyter nbconvert --to notebook --execute work/notebooks/ML_08_Capstone.ipynb
