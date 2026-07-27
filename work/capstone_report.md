@@ -82,7 +82,10 @@
 ## 8. Reproducibility
 * **Environment:** Python 3.10+, `pandas`, `scikit-learn`, `duckdb`, `numpy`.
 * **Random Seed:** `42` (applied across all data splits and model instantiations).
-* **Execution Commands:**
+* **Notebook Access:**
+  * **GitHub Repository:** [MashaalFarrukh-max/flyrank-ml-internship](https://github.com/MashaalFarrukh-max/flyrank-ml-internship)
+  * **Google Colab Direct Link:** [Open `ML_08_Capstone.ipynb` in Colab](https://colab.research.google.com/github/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/ML_08_Capstone.ipynb)
+* **Execution Commands (Local / Terminal):**
   ```bash
   # 1. Clone repository
   git clone [https://github.com/MashaalFarrukh-max/flyrank-ml-internship.git](https://github.com/MashaalFarrukh-max/flyrank-ml-internship.git)
