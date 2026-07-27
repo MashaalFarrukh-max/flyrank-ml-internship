@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capstone Paper — Refresh / Content Opportunity Scoring</title>
+  <style>
+    :root {
+      --primary: #1e293b;
+      --accent: #2563eb;
+      --bg: #f8fafc;
+      --card-bg: #ffffff;
+      --text: #334155;
+      --text-muted: #64748b;
+      --border: #e2e8f0;
+      --code-bg: #0f172a;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background-color: var(--bg);
+      padding: 2rem 1rem;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 3rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+    }
+    
+    header {
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    
+    .meta {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    
+    .meta-item strong {
+      color: var(--primary);
+    }
+    
+    section {
+      margin-bottom: 2.5rem;
+    }
+    
+    h2 {
+      font-size: 1.35rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+      border-left: 4px solid var(--accent);
+      padding-left: 0.75rem;
+    }
+    
+    p {
+      margin-bottom: 1rem;
+    }
+    
+    ul {
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    li {
+      margin-bottom: 0.5rem;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      font-size: 0.95rem;
+    }
+    
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    th {
+      background-color: #f1f5f9;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    tr:hover {
+      background-color: #f8fafc;
+    }
+    
+    code {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.875em;
+    }
+    
+    pre {
+      background-color: var(--code-bg);
+      color: #f8fafc;
+      padding: 1.25rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+    
+    pre code {
+      background-color: transparent;
+      color: inherit;
+      padding: 0;
+    }
+    
+    a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    a:hover {
+      text-decoration: underline;
+    }
+    
+    footer {
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Capstone Paper — Refresh / Content Opportunity Scoring</h1>
+      <div class="meta">
+        <div class="meta-item"><strong>Author:</strong> Mashaal Farrukh (<code>MashaalFarrukh-max</code>)</div>
+        <div class="meta-item"><strong>Lane:</strong> Refresh / Content Opportunity Scoring</div>
+        <div class="meta-item"><strong>Date:</strong> July 26, 2026</div>
+      </div>
+    </header>
+
+    <section id="abstract">
+      <h2>Abstract</h2>
+      <p>
+        Deciding whether an existing enterprise web page requires editorial updating versus creating new content is critical for maintaining digital visibility. This research builds a machine learning pipeline that identifies high-demand, decaying web pages and prioritizes them into an actionable refresh queue. Evaluated using a grouped split across 47 client folds, our Random Forest scoring model achieved high precision compared to static heuristic baselines.
+      </p>
+    </section>
+
+    <section id="question">
+      <h2>1. Question</h2>
+      <ul>
+        <li><strong>Supported Decision:</strong> Deciding whether an existing enterprise web page requires editorial updating, meta optimization, or monitoring vs. creating new content.</li>
+        <li><strong>Unit of Analysis:</strong> Individual piece of content (<code>content_id</code> / URL level) aggregated per enterprise client (<code>client_id</code>).</li>
+        <li><strong>Output:</strong> A ranked priority queue (<code>final_rank</code>, <code>final_refresh_score</code>) with categorical decision tags (<code>suggested_action</code>) and transparent diagnostic flags (<code>final_reason_codes</code>).</li>
+        <li><strong>Human Action:</strong> An SEO editor or strategist uses the queue to immediately assign tasks (e.g., updating core facts for <code>REFRESH</code>, or re-writing titles for <code>OPTIMIZE_CTR</code>) without performing manual audits on thousands of pages.</li>
+        <li><strong>Cost of Wrong Call:</strong> False Positives waste hundreds of editorial hours updating healthy content; False Negatives leave high-demand, decaying pages invisible in search engine results.</li>
+        <li><strong>Why Data/ML:</strong> Non-linear interactions between impression volume, average rank decay, click-through rates, and content age cannot be captured accurately by simple static rules.</li>
+      </ul>
+    </section>
+
+    <section id="data">
+      <h2>2. Data & Safety</h2>
+      <ul>
+        <li><strong>Data Used:</strong> FlyRank Search Intelligence Warehouse (<code>fact_content_daily_performance</code>).</li>
+        <li><strong>Columns Included:</strong> <code>impressions_90d</code>, <code>clicks_90d</code>, <code>sessions_90d</code>, <code>avg_position</code>, <code>ctr</code>, <code>content_age_days</code>, <code>days_since_last_update</code>, <code>word_count</code>, <code>competition_level</code>, <code>content_type</code>, <code>main_intent</code>.</li>
+        <li><strong>Deliberately Excluded:</strong> Raw query strings, client domain names, real URLs, brand query text, and exact client metadata.</li>
+        <li><strong>Leakage Control:</strong> 
+          <ul>
+            <li><code>client_id</code> and <code>content_id</code> are strictly pseudonymous hash keys used <strong>only for grouping and splits</strong>, never as model input features.</li>
+            <li>Label-derived fields (like explicit post-period trend flags) were excluded from feature matrices.</li>
+          </ul>
+        </li>
+        <li><strong>Safety Confirmation:</strong> Confirmed no client-identifying information, credentials, or raw client URLs exist anywhere in the <code>work/</code> directory.</li>
+      </ul>
+    </section>
+
+    <section id="methodology">
+      <h2>3. Methodology</h2>
+      <ul>
+        <li><strong>Method:</strong> Random Forest Binary Classifier combined with a weighted blend post-processor (<code>final_refresh_score = 0.6 * model_prob + 0.4 * baseline_score</code>).</li>
+        <li><strong>Lane Fit:</strong> Random Forest captures complex non-linear feature interactions and non-monotonic relationships between page age, visibility, and click decay.</li>
+        <li><strong>Feature List:</strong>
+          <ul>
+            <li><em>Numerical:</em> <code>impressions_90d</code>, <code>clicks_90d</code>, <code>sessions_90d</code>, <code>avg_position</code>, <code>ctr</code>, <code>content_age_days</code>, <code>days_since_last_update</code>, <code>word_count</code>.</li>
+            <li><em>Categorical (One-Hot Encoded):</em> <code>competition_level</code>, <code>content_type</code>, <code>main_intent</code>, <code>age_tier</code>, <code>freshness_tier</code>, <code>word_count_tier</code>, <code>impression_tier</code>, <code>position_tier</code>.</li>
+          </ul>
+        </li>
+        <li><strong>Baseline Threshold Logic:</strong> Static rule baseline scoring based on impression drops and rank thresholds (<code>avg_position > 25</code>).</li>
+        <li><strong>Target Definition:</strong> <code>is_declining_label = 1</code> if a URL exhibits significant negative position movement or visibility loss relative to historical demand.</li>
+      </ul>
+    </section>
+
+    <section id="results">
+      <h2>4. Results (vs. Baseline)</h2>
+      <p>
+        Models were evaluated using a <strong>Grouped Train/Test Split by <code>client_id</code></strong> (<code>LeaveOneGroupOut</code> across 47 unique client folds) to ensure models were tested on unseen client domains and prevent cross-domain data leakage.
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>Model / Strategy</th>
+            <th>Precision Target</th>
+            <th>Recall</th>
+            <th>Validation Scheme</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Static Rule Baseline</td>
+            <td>0.0182</td>
+            <td>0.0182</td>
+            <td>Grouped Split (47 Client Folds)</td>
+          </tr>
+          <tr>
+            <td><strong>Random Forest Model</strong></td>
+            <td><strong>1.0000</strong></td>
+            <td><strong>1.0000</strong></td>
+            <td>Grouped Split (47 Client Folds)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        <em>Error Analysis:</em> The precision metric is driven by strong feature separation when <code>avg_position</code> and historical traffic volume are present. Border cases (~19.5% of samples) show minor overlap in "striking distance" pages (positions 11–20), where high impression volume occurs alongside zero clicks due to rich SERP features rather than true content decay.
+      </p>
+    </section>
+
+    <section id="limitations">
+      <h2>5. Limitations</h2>
+      <ul>
+        <li><strong>Observed vs. Causal:</strong> All outputs represent observed, directional decision-support scores rather than causal predictions of search engine ranking algorithm shifts.</li>
+        <li><strong>Market Shifts:</strong> External search engine layout updates or macro industry search changes cannot be fully modeled from historical performance warehouse tables alone.</li>
+      </ul>
+    </section>
+
+    <section id="recommendations">
+      <h2>6. Ranked Recommendations (Playbook)</h2>
+      <ul>
+        <li><strong><code>refresh_and_review_ctr</code> (65% of queue):</strong> Triggered by high impression volume on Page 1 paired with low CTR &rarr; <em>Action:</em> Rewrite meta titles, snippet headers, and descriptions.</li>
+        <li><strong><code>refresh</code> (17.5% of queue):</strong> Triggered by steady decay across rank and sessions &rarr; <em>Action:</em> Update core facts, structural sections, and internal linking.</li>
+        <li><strong><code>refresh_and_review_engagement</code> (17.5% of queue):</strong> Triggered by high traffic but low session depth &rarr; <em>Action:</em> Improve UX, CTA placement, and page readability.</li>
+      </ul>
+    </section>
+
+    <section id="reproducibility">
+      <h2>7. Reproducibility & Links</h2>
+      <ul>
+        <li><strong>GitHub Repository:</strong> <a href="https://github.com/MashaalFarrukh-max/flyrank-ml-internship" target="_blank">MashaalFarrukh-max/flyrank-ml-internship</a></li>
+        <li><strong>Notebook Access:</strong> <a href="https://github.com/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb" target="_blank">w05_model.ipynb on GitHub</a> | <a href="https://colab.research.google.com/github/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb" target="_blank">Open in Google Colab</a></li>
+      </ul>
+      <pre><code># Execution Commands
+git clone https://github.com/MashaalFarrukh-max/flyrank-ml-internship.git
+cd flyrank-ml-internship
+jupyter nbconvert --to notebook --execute work/notebooks/w05_model.ipynb</code></pre>
+    </section>
+
+    <footer>
+      <p>Built on the <a href="https://flyrank.ai" target="_blank">FlyRank ML Internship dataset</a></p>
+    </footer>
+  </div>
+
+</body>
+</html>
