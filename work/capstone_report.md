@@ -18,7 +18,7 @@
 ---
 
 ## 2. Data Safety
-* **Data Used:** FlyRank Search Intelligence Warehouse (`fact_content_daily_performance`).
+* **Data Used:** FlyRank Search Intelligence Warehouse (`fact_content_daily_performance`)
 * **Columns Included:** `impressions_90d`, `clicks_90d`, `sessions_90d`, `avg_position`, `ctr`, `content_age_days`, `days_since_last_update`, `word_count`, `competition_level`, `content_type`, `main_intent`.
 * **Deliberately Excluded:** Raw query strings, client domain names, real URLs, brand query text, and exact client metadata.
 * **Leakage Control:** 
