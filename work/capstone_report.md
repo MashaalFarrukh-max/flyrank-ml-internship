@@ -84,7 +84,7 @@
 * **Random Seed:** `42` (applied across all data splits and model instantiations).
 * **Notebook Access:**
   * **GitHub Repository:** [MashaalFarrukh-max/flyrank-ml-internship](https://github.com/MashaalFarrukh-max/flyrank-ml-internship)
-  * **Google Colab Direct Link:** [Open `ML_08_Capstone.ipynb` in Colab](https://colab.research.google.com/github/MashaalFarrukh-max/flyrank-ml-internship/blob/main/work/notebooks/ML_08_Capstone.ipynb)
+internship/blob/main/work/notebooks/ML_08_Capstone.ipynb)
 * **Execution Commands (Local / Terminal):**
   ```bash
   # 1. Clone repository
